@@ -1,12 +1,6 @@
-﻿Option Strict On
-
-Imports System.Drawing.Text
-Imports System.Linq
-Imports System.Text
+﻿Imports System.Text
 
 Public Class Form1
-
-    Private _generateCCode As Boolean
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim defaultFont = FontComboBox1.Items.
@@ -40,9 +34,11 @@ Public Class Form1
         Dim sc = New StringBuilder()
         Dim one = CByte(1)
 
+        Dim generateCCode = optGenerateCCode.Checked
+
         sc.Append("// Declaring the array for the Character Set.")
         sc.Append(vbCrLf)
-        If _generateCCode Then
+        If generateCCode Then
             sc.Append("unsigned byte charSet[255][16];")
         Else
             sc.Append("private byte[,] charSet=new byte[255,16];")
@@ -57,7 +53,7 @@ Public Class Form1
         Dim font = New Font(DirectCast(FontComboBox1.SelectedItem, FontComboboxItem).FontFamily, 77)
         Dim g = Graphics.FromImage(bitmap)
 
-        For c = 33 To 255
+        For c = 0 To 255
             g.Clear(Color.White)
             For x = 0 To picFontRenderSurface.Width Step 8
                 g.DrawLine(Pens.Black, New Point(x, 0), New Point(x, picFontRenderSurface.Height - 1))
@@ -83,10 +79,10 @@ Public Class Form1
                     End If
                 Next
 
-                If _generateCCode Then
-                    sc.Append($"charSet[{c:000}][{y:00}] = 0b{Convert.ToString(value, 2).PadLeft(8, "0"c)} ")
+                If generateCCode Then
+                    sc.Append($"charSet[{c:000}][{y:00}] = 0b{Convert.ToString(value, 2).PadLeft(8, "0"c)}; ")
                 Else
-                    sc.Append($"charSet[{c:000},{y:00}] = 0b{Convert.ToString(value, 2).PadLeft(8, "0"c)} ")
+                    sc.Append($"charSet[{c:000},{y:00}] = 0b{Convert.ToString(value, 2).PadLeft(8, "0"c)}; ")
                 End If
                 sc.Append($"  // {Convert.ToString(value, 2).PadLeft(8, "0"c).Replace("0", "_").Replace("1", "*")}")
                 sc.Append(vbCrLf)
@@ -96,8 +92,9 @@ Public Class Form1
 
             picFontRenderSurface.Image = bitmap
 
-            Await Task.Delay(0)
+            Await Task.Delay(30)
         Next
-        Await Task.Delay(100)
+
+        Call (New frmSourceCode).ShowDialog(sc.ToString)
     End Sub
 End Class

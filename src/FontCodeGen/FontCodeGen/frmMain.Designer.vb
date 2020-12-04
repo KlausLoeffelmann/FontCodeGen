@@ -30,6 +30,8 @@ Partial Class Form1
         Me.nudFontSize = New System.Windows.Forms.NumericUpDown()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.btnGenerateCode = New System.Windows.Forms.Button()
+        Me.optGenerateCSharp = New System.Windows.Forms.RadioButton()
+        Me.optGenerateCCode = New System.Windows.Forms.RadioButton()
         Me.GroupBox1.SuspendLayout()
         CType(Me.picFontRenderSurface, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.nudFontSize, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -105,18 +107,42 @@ Partial Class Form1
         '
         'btnGenerateCode
         '
-        Me.btnGenerateCode.Location = New System.Drawing.Point(326, 377)
+        Me.btnGenerateCode.Location = New System.Drawing.Point(596, 377)
         Me.btnGenerateCode.Name = "btnGenerateCode"
         Me.btnGenerateCode.Size = New System.Drawing.Size(165, 37)
         Me.btnGenerateCode.TabIndex = 9
         Me.btnGenerateCode.Text = "Generate Code..."
         Me.btnGenerateCode.UseVisualStyleBackColor = True
         '
+        'optGenerateCSharp
+        '
+        Me.optGenerateCSharp.AutoSize = True
+        Me.optGenerateCSharp.Location = New System.Drawing.Point(105, 383)
+        Me.optGenerateCSharp.Name = "optGenerateCSharp"
+        Me.optGenerateCSharp.Size = New System.Drawing.Size(150, 24)
+        Me.optGenerateCSharp.TabIndex = 10
+        Me.optGenerateCSharp.Text = "generate C# Code"
+        Me.optGenerateCSharp.UseVisualStyleBackColor = True
+        '
+        'optGenerateCCode
+        '
+        Me.optGenerateCCode.AutoSize = True
+        Me.optGenerateCCode.Checked = True
+        Me.optGenerateCCode.Location = New System.Drawing.Point(320, 383)
+        Me.optGenerateCCode.Name = "optGenerateCCode"
+        Me.optGenerateCCode.Size = New System.Drawing.Size(141, 24)
+        Me.optGenerateCCode.TabIndex = 11
+        Me.optGenerateCCode.TabStop = True
+        Me.optGenerateCCode.Text = "generate C Code"
+        Me.optGenerateCCode.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 619)
+        Me.Controls.Add(Me.optGenerateCCode)
+        Me.Controls.Add(Me.optGenerateCSharp)
         Me.Controls.Add(Me.btnGenerateCode)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.nudFontSize)
@@ -124,7 +150,9 @@ Partial Class Form1
         Me.Controls.Add(Me.FontComboBox1)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Label1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "Form1"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "FontCodeGen - Generating Byte-Array from rasterzized Fonts"
         Me.GroupBox1.ResumeLayout(False)
         CType(Me.picFontRenderSurface, System.ComponentModel.ISupportInitialize).EndInit()
@@ -142,4 +170,6 @@ Partial Class Form1
     Friend WithEvents nudFontSize As NumericUpDown
     Friend WithEvents Label2 As Label
     Friend WithEvents btnGenerateCode As Button
+    Friend WithEvents optGenerateCSharp As RadioButton
+    Friend WithEvents optGenerateCCode As RadioButton
 End Class
