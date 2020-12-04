@@ -84,10 +84,11 @@ Public Class Form1
                 Next
 
                 If _generateCCode Then
-                    sc.Append($"charSet[{c}][{y}] = 0b{Convert.ToString(value, 2).PadLeft(8, "0"c)}")
+                    sc.Append($"charSet[{c:000}][{y:00}] = 0b{Convert.ToString(value, 2).PadLeft(8, "0"c)} ")
                 Else
-                    sc.Append($"charSet[{c},{y}] = 0b{Convert.ToString(value, 2).PadLeft(8, "0"c)}")
+                    sc.Append($"charSet[{c:000},{y:00}] = 0b{Convert.ToString(value, 2).PadLeft(8, "0"c)} ")
                 End If
+                sc.Append($"  // {Convert.ToString(value, 2).PadLeft(8, "0"c).Replace("0", "_").Replace("1", "*")}")
                 sc.Append(vbCrLf)
             Next
 
