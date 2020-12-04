@@ -5,6 +5,9 @@ Imports System.Linq
 Imports System.Text
 
 Public Class Form1
+
+    Private _generateCCode As Boolean
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim defaultFont = FontComboBox1.Items.
             Cast(Of FontComboboxItem).
@@ -35,6 +38,17 @@ Public Class Form1
     Private Async Sub btnGenerateCode_Click(sender As Object, e As EventArgs) Handles btnGenerateCode.Click
 
         Dim sc = New StringBuilder()
+        Dim one = CByte(1)
+
+        sc.Append("// Declaring the array for the Character Set.")
+        sc.Append(vbCrLf)
+        If _generateCCode Then
+            sc.Append("unsigned byte charSet[255][16];")
+        Else
+            sc.Append("private byte[,] charSet=new byte[255,16];")
+        End If
+        sc.Append(vbCrLf)
+        sc.Append(vbCrLf)
 
         Dim bitmap = New Bitmap(
             picFontRenderSurface.Size.Width,
@@ -54,25 +68,35 @@ Public Class Form1
 
             g.DrawString(ChrW(c), font, Brushes.Black, New PointF(-22, -8))
 
-            For x = 0 To 7
+            For y = 0 To 15
 
-                Dim value As UShort = 0
+                Dim value As Byte = 0
 
-                For y = 0 To 15
+                For x = 0 To 7
                     Dim xr = x * 8 + 4
                     Dim yr = y * 8 + 4
 
                     Dim col = bitmap.GetPixel(xr, yr)
+                    value <<= 1
                     If col.ToArgb <> &HFFFFFFFF Then
-                        value >>= 1
-                        value = value Or CUShort(2 ^ 15)
+                        value = value Or one
                     End If
                 Next
+
+                If _generateCCode Then
+                    sc.Append($"charSet[{c}][{y}] = 0b{Convert.ToString(value, 2).PadLeft(8, "0"c)}")
+                Else
+                    sc.Append($"charSet[{c},{y}] = 0b{Convert.ToString(value, 2).PadLeft(8, "0"c)}")
+                End If
+                sc.Append(vbCrLf)
             Next
+
+            sc.Append(vbCrLf)
 
             picFontRenderSurface.Image = bitmap
 
-            Await Task.Delay(1000)
+            Await Task.Delay(0)
         Next
+        Await Task.Delay(100)
     End Sub
 End Class
